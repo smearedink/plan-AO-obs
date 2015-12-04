@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Wedge
@@ -27,19 +29,20 @@ def main():
     parser.add_argument('--catfile', '-c', dest='cat_file',\
       required=True, type=str,\
       help='The cat file for this observation')
+    parser.add_argument('--outfile', '-o', dest='out_file',\
+      required=False, type=str,\
+      help='Filename of cmd file to output (cmd file contents printed'\
+      ' to screen if this is not used')
+    parser.add_argument('--plot', '-p', dest='make_plot',\
+      required=False, action='store_true',\
+      help='Plot observing path to screen before exiting')
+    parser.add_argument('--quiet', '-q', dest='verbose',\
+      required=False, action='store_false',\
+      help='Suppress most printed output (verbose by default)')
+    
+    parser.set_defaults(make_plot=False, verbose=True, out_file=None)
 
     args = parser.parse_args()
-
-    #input_date = "2015-11-16"
-    #input_time = "15:00:00"
-    #input_obs_len_hr = 2.75
-    #input_src_file = "p2789.src"
-
-    #input_date = "2015-11-27"
-    #input_time = "14:00:00"
-    #input_obs_len_hr = 2.25
-    #input_src_file = "p2789_A.src"
-    #input_cat_file = "p2789.cat"
 
     input_date = args.date
     input_time = args.time
@@ -50,9 +53,9 @@ def main():
     session = aoSession(input_src_file, input_cat_file, input_date, input_time,
                         input_obs_len_hr)
 
-    session.create_plan()
+    session.create_plan(verbose=args.verbose, make_plot=args.make_plot)
 
-    session.make_cmd_file()
+    session.make_cmd_file(args.out_file)
 
 # Some things that are useful
 za_min = 1.1 # deg
@@ -568,7 +571,7 @@ class aoSession:
             title_C = "(%.2f hours)" % (t / 3600.)
             ax.set_title(title_A + title_B + title_C)
 
-            fig.show()
+            plt.show()
         
     def make_cmd_file(self, fname=None):
         """
@@ -655,7 +658,7 @@ class aoSession:
         cmd_str += "LOG \"LBand Observation Completed.\"\n"
         
         if fname is None:
-            print "Command file begins below:"
+            print "# Command file begins below:"
             print ""
             print cmd_str
         else:
