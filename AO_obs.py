@@ -471,7 +471,7 @@ class aoSession:
 
             if len(options):
                 wiggle_room = sec_to_last_seen - sec_needed - slew_times
-                this_source = options[np.argmin(wiggle_room[options] * \
+                this_source = options[np.argmin(wiggle_room[options]**3 * \
                   slew_times[options])]
                 if verbose:
                     print "[%.2f min] Of %d option%s, picked %s, %d left"\
