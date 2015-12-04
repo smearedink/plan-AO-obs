@@ -1,19 +1,23 @@
-# plan-AO-obs
+## PALFA Timing Command File Generator (PATiCoFiG?)
 
 A script made with PALFA Arecibo timing sessions in mind.  For a given start time, observation length, and set of sources, a *.cmd file is produced that can be run in CIMA.  An attempt is made to pick a reasonable order in which to observe the sources based on rise and set times and slew times.
 
 Run like so:
 ```
-python AO_obs.py -d YYYY-MM-DD -t HH:MM:SS -l OBS_LEN_HR -s SRC_FILE -c CAT_FILE
+python AO_obs.py -p -o OUT_FILE -d YYYY-MM-DD -t HH:MM:SS -l OBS_LEN_HR -s SRC_FILE -c CAT_FILE
 ```
 
-Required arguments:
-
+#### Required arguments:
 * **--date**, **-d**: The start date of the observation (AST)
 * **--time**, **-t**: The start time of the observation (AST)
 * **--nhours**, **-l**: The duration of the observation in hours
 * **--srcfile**, **-s**: The input list of sources for this observation (see below for details)
 * **--catfile**, **-c**: The CIMA cat file for this observation (the names in the src file must match the names in the cat file)
+
+#### Optional arguments:
+* **--outfile**, **-o**: Filename of the cmd file to write to disk (if not used, prints to screen instead)
+* **--plot**, **-p**: Plot observing path to screen before exiting (note that slew lines don't represent exact path)
+* **--quiet**, **-q**: Suppress most printed output (verbose by default)
 
 Below is a sample src file.  The columns are simply whitespace-delimited.  Rows beginning with "#" are ignored.
 
@@ -38,3 +42,6 @@ The columns are:
 4. Receiver ('LWide' or '430MHz')
 5. Folding parfile (optional, ignored in search mode)
  * If mode is 'fold' and this column is left empty, the default parfile that will be used for folding is /home/gpu/tzpar/[NAME].par where [NAME] is the source name from the first column.
+
+### Things that are not implemented that would be nice:
+* If nothing is up at the beginning or end, observe some other source from a pre-determined list automatically (or with a prompt, anyway)
