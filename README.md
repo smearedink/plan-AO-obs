@@ -1,6 +1,6 @@
 ## PALFA Timing Command File Generator (PATiCoFiG?)
 
-A script made with PALFA Arecibo timing sessions in mind.  For a given start time, observation length, and set of sources, a *.cmd file is produced that can be run in CIMA.  An attempt is made to pick a reasonable order in which to observe the sources based on rise and set times and slew times.
+A script made with PALFA Arecibo timing sessions in mind.  For a given start time, observation length, and set of sources, a .cmd file is produced that can be run in CIMA.  An attempt is made to pick a reasonable order in which to observe the sources based on rise and set times and slew times.  This is most likely not the *optimal* time (this is a hard problem!) and even as a rough attempt to optimize I'm sure it can be improved.  But it's a little more sophisticated than the "just put them in RA order" that we were typically doing.
 
 Run like so:
 ```
@@ -45,3 +45,4 @@ The columns are:
 
 ### Things that are not implemented that would be nice:
 * If nothing is up at the beginning or end, observe some other source from a pre-determined list automatically (or with a prompt, anyway)
+* Add in some reasonable delays for switching receivers, settling, etc.
