@@ -20,7 +20,8 @@ python AO_obs.py -p -o OUT_FILE -d YYYY-MM-DD -t HH:MM:SS -l OBS_LEN_HR -s SRC_F
 * **--quiet**, **-q**: Suppress most printed output (verbose by default)
 
 ####  Here is a sample plot it produces:
-![Alt text](/homes/borg/patelchi/plan-AO-obs/obs_path.png?raw=true "Observation path") 
+
+![image](/homes/borg/patelchi/plan-AO-obs/obs_path.png?raw=true "Observation path") 
 
 
 
