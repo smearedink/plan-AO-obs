@@ -21,7 +21,7 @@ python AO_obs.py -p -o OUT_FILE -d YYYY-MM-DD -t HH:MM:SS -l OBS_LEN_HR -s SRC_F
 
 ####  Here is a sample plot it produces:
 
-![alt tag](https://github.com/chitrangpatel/plan-AO-obs/tree/master/plot/obs_path.png "Observation path") 
+![image](https://github.com/chitrangpatel/plan-AO-obs/tree/master/plot/obs_path.png "Observation path") 
 
 
 
