@@ -19,6 +19,11 @@ python AO_obs.py -p -o OUT_FILE -d YYYY-MM-DD -t HH:MM:SS -l OBS_LEN_HR -s SRC_F
 * **--plot**, **-p**: Plot observing path to screen before exiting (note that slew lines don't represent exact path)
 * **--quiet**, **-q**: Suppress most printed output (verbose by default)
 
+####  Here is a sample plot it produces:
+![Alt text](/homes/borg/patelchi/plan-AO-obs/obs_path.png?raw=true "Observation path") 
+
+
+
 Below is a sample src file.  The columns are simply whitespace-delimited.  Rows beginning with "#" are ignored.
 
 ```
