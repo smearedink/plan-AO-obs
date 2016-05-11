@@ -21,8 +21,7 @@ python AO_obs.py -p -o OUT_FILE -d YYYY-MM-DD -t HH:MM:SS -l OBS_LEN_HR -s SRC_F
 
 ####  Here is a sample plot it produces:
 
-![Observation path screenshot](https://github.com/chitrangpatel/plan-AO-obs/tree/master/plot/obs_path.png "Observation path") 
-
+![Observation path screenshot](https://raw.githubusercontent.com/chitrangpatel/plan-AO-obs/master/plot/obs_path.png "Observation path") 
 
 
 Below is a sample src file.  The columns are simply whitespace-delimited.  Rows beginning with "#" are ignored.
