@@ -29,6 +29,10 @@ def main():
     parser.add_argument('--catfile', '-c', dest='cat_file',\
       required=True, type=str,\
       help='The cat file for this observation')
+    parser.add_argument('--forceorder', '-f', dest='force_order',\
+      required=False, action='store_true',\
+      help='Force the observing plan to use the order of the sources in the'\
+      ' src file rather than try to optimize')
     parser.add_argument('--outfile', '-o', dest='out_file',\
       required=False, type=str,\
       help='Filename of cmd file to output (cmd file contents printed'\
@@ -53,7 +57,8 @@ def main():
     session = aoSession(input_src_file, input_cat_file, input_date, input_time,
                         input_obs_len_hr)
 
-    session.create_plan(verbose=args.verbose, make_plot=args.make_plot)
+    session.create_plan(verbose=args.verbose, make_plot=args.make_plot,\
+      use_srcfile_order=args.force_order)
 
     session.make_cmd_file(args.out_file)
 
@@ -412,7 +417,11 @@ class aoSession:
                 ax.plot(xc[tick], yc[tick], 'o', c='purple')
                 src_names.add(src.name)
                 
-    def create_plan(self, verbose=True, make_plot=True):
+    def create_plan(self, verbose=True, make_plot=True, use_srcfile_order=False):
+        """
+        If use_srcfile_order is True, rather than try to optimize the order,
+        the order of the sources in the src list will be used.
+        """
         self.plan = []
         
         done = set()
@@ -469,16 +478,31 @@ class aoSession:
                 enough_time = False
             options = np.array(options)
 
+            # if we chose to use the order sources were listed in the source
+            # file, the only option is the next source in the list, or nothing
+            # if that's not available
+            if use_srcfile_order:
+                ii_left = set(range(len(self.sources))).difference(done)
+                if min(ii_left) in options:
+                    options = np.array([min(ii_left)])
+                else:
+                    options = np.array([])
+
             if len(options):
                 wiggle_room = sec_to_last_seen - sec_needed - slew_times
                 this_source = options[np.argmin(wiggle_room[options]**3 * \
                   slew_times[options])]
                 if verbose:
+                    obs_start = self.start_time - 4.*u.hour + t*u.second + \
+                      slew_times[this_source]*u.second
+                    obs_end = obs_start + sec_needed[this_source]*u.second
                     print "[%.2f min] Of %d option%s, picked %s, %d left"\
-                      " (%d sec slew)" % (t/60., len(options), \
+                      " (%d sec slew, obs %s to %s)" % (t/60., len(options), \
                       ['','s'][bool(len(options)-1)], \
                       self.sources[this_source].name, \
-                      len(self.sources)-len(done)-1, slew_times[this_source])
+                      len(self.sources)-len(done)-1, slew_times[this_source],
+                      obs_start.datetime.strftime("%H:%M:%S"), \
+                      obs_end.datetime.strftime("%H:%M:%S"))
                 
                 self.plan.append(this_source)
                 
